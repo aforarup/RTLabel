@@ -183,6 +183,13 @@
 
 - (void)render
 {
+    @try {
+        <#Code that can potentially throw an exception#>
+    } @catch (NSException *exception) {
+        <#Handle an exception thrown in the @try block#>
+    } @finally {
+        <#Code that gets executed whether or not an exception is thrown#>
+    }
 	if (self.currentSelectedButtonComponentIndex==-1)
 	{
 		for (id view in [self subviews])
@@ -275,12 +282,14 @@
 					[self applySingleUnderlineText:attrString atPosition:component.position withLength:[component.text length]];
 				}
 			}
-			
-			NSString *value = [component.attributes objectForKey:@"href"];
-			value = [value stringByReplacingOccurrencesOfString:@"'" withString:@""];
-			[component.attributes setObject:value forKey:@"href"];
-			
-			[links addObject:component];
+            @try {
+                NSString *value = [component.attributes objectForKey:@"href"];
+                value = [value stringByReplacingOccurrencesOfString:@"'" withString:@""];
+                [component.attributes setObject:value forKey:@"href"];
+                
+                [links addObject:component];
+            } @catch (NSException *exception) {
+            }
 		}
 		else if ([component.tagLabel caseInsensitiveCompare:@"u"] == NSOrderedSame || [component.tagLabel caseInsensitiveCompare:@"uu"] == NSOrderedSame)
 		{
